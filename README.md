@@ -10,10 +10,6 @@ If you understand everything on this page, you can confidently explain this proj
 
 ---
 
-# RESUME — JOB MATCH ANALYZER (FINAL)
-
----
-
 ## 🎯 Purpose
 
 This project demonstrates how core DSA concepts can be applied to a real-world text processing problem.
@@ -162,12 +158,12 @@ Since ordering is not required, hashing is preferred for faster lookup.
 
 ## 🧪 Sample Input
 
-**Resume:** SQL SQL SQL Python
-**Job Description:** SQL Python C++
+**Resume:** ```SQL SQL SQL Python```
+**Job Description:** ```SQL Python C++```
 
 **Output:**
 
-<pre>```====== Resume Match Analysis ======
+<pre>====== Resume Match Analysis ======
 
 Matched Skills:
 python
@@ -176,7 +172,7 @@ sql
 Missing Skills:
 c++
 
-Match Score: 44.44%```</pre>
+Match Score: 44.44%</pre>
 
 
 ---
@@ -204,20 +200,6 @@ This project reinforces:
 
 ---
 
-## ✅ Final Reminder
+## 👩‍💻 Author
 
-This project is not about fancy UI.
-
-It is about:
-
-- Clean thinking  
-- Correct data structures  
-- Proper separation of concerns  
-- Clear explanation under interview pressure  
-
-If you can defend every design decision here,  
-you are strong for internship interviews.
-
----
-
-👩‍💻 Built as part of a Data Structures & Algorithms mastery journey.
+Built as part of Data Structures & Algorithms learning journey.
