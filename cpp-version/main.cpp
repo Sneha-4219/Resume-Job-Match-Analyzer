@@ -1,10 +1,31 @@
+/*
+==========================================================
+Resume – Job Match Analyzer (C++ | STL | OOP | Hashing)
+Author: Sneha Sharma
+
+Description:
+CLI-based tool that analyzes resume and job description
+text to compute a weighted skill match score.
+
+Core Concepts Used:
+- String normalization & tokenization
+- Hashing (unordered_map, unordered_set)
+- Frequency counting
+- Weighted scoring with capped contribution
+- Clean OOP separation of concerns
+
+Time Complexity: O(n + m)
+==========================================================
+*/
 #include  <bits/stdc++.h>
 using namespace std;
 
 class TextProcessor{
 private:
+    // Common filler words that should not be treated as skills
     unordered_set<string> stopWords;
 public:
+    // Initialize stopwords once when object is created 
     TextProcessor() {
         stopWords = {
             "and", "the", "for", "with", "a", "an",
@@ -13,6 +34,10 @@ public:
         };
     }
 
+    // Normalize text:
+    // - Convert to lowercase
+    // - Preserve '+' and '#'
+    // - Replace other punctuation with spaces
     string normalize(const string &text) {
         string normalized = "";
         for(char ch : text) {
@@ -27,6 +52,8 @@ public:
         return normalized;
     }
 
+    // Split normalized string into individual words manually
+    // (avoids using regex for full control)
     vector<string> tokenize(const string &text) {
         vector<string> words;
         string currentWord;
@@ -47,7 +74,9 @@ public:
 
         return words;
     }
-
+    
+    // Full preprocessing pipeline:
+    // normalize → tokenize → remove stopwords
     vector<string> process(const string &text) {
         string cleaned = normalize(text);
         vector<string> tokens = tokenize(cleaned);
@@ -65,6 +94,8 @@ public:
 
 };
 
+// Responsible for matching processed resume tokens
+// against job description tokens using weighted scoring
 class SkillMatcher {
 private:
     unordered_map<string, int> resumeFreq;
@@ -81,25 +112,35 @@ public:
     }
 
     void match(const vector<string> &resume, const vector<string> &job) {
+
+        // Reset internal state before each new match
         resumeFreq.clear();
         jobSet.clear();
         matchedSkills.clear();
         missingSkills.clear();
         totalPoints = 0;
 
+        // Build frequency map of resume skills
+        // Key: skill | Value: frequency in resume
         for(const string &word : resume) {
             resumeFreq[word]++;
         }
 
+        // Store unique job skills (duplicates removed)
         for(const string &word : job) {
             jobSet.insert(word);
         }
 
+        // For each required job skill:
+        // - If present in resume → add capped weighted points
+        // - Else → mark as missing
         for(const string &skill : jobSet) {
             if(resumeFreq.count(skill)) {
                 matchedSkills.push_back(skill);
 
                 int freq = resumeFreq[skill];
+
+                // Cap contribution at 3 to prevent score inflation
                 totalPoints += min(freq, 3);
             } else {
                 missingSkills.push_back(skill);
@@ -124,9 +165,13 @@ public:
     }
 };
 
+// Responsible only for computing final percentage score
+// Keeps scoring logic independent from matching logic
 class Scorer {
 public:
     double calculateScore(int totalPoints, int jobCount) {
+        // Weighted score formula:
+        // (TotalPoints / (Cap × NumberOfJobSkills)) × 100
         double score = 0;
         if(jobCount > 0) {
             score = (double)totalPoints / (3 * jobCount) * 100;
@@ -135,6 +180,8 @@ public:
     }
 };
 
+// Entry point: orchestrates preprocessing,
+// matching, and scoring components
 int main() {
 
     string resume;
@@ -150,9 +197,11 @@ int main() {
     SkillMatcher sm;
     Scorer scorer;
 
+    // Preprocess raw text into cleaned skill tokens
     vector<string> resumeProcessed = tp.process(resume);
     vector<string> jobProcessed = tp.process(job);
 
+    // Perform weighted skill matching
     sm.match(resumeProcessed, jobProcessed);
 
     vector<string> matchedSkills = sm.getMatched();
@@ -161,8 +210,10 @@ int main() {
     int totalPoints = sm.getTotalPoints();
     int jobCount = sm.getJobSkillCount();
 
+    // Calculate final percentage score
     double score = scorer.calculateScore(totalPoints, jobCount);
 
+    // Sort output alphabetically for clean display
     sort(matchedSkills.begin(), matchedSkills.end());
     sort(missingSkills.begin(), missingSkills.end());
 

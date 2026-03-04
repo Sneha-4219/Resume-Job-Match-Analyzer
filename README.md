@@ -1,3 +1,13 @@
+## 📂 Project Structure
+
+```
+Resume-Job-Match-Analyzer/
+│
+├── cpp-version/      # Core C++ implementation
+├── web-version/      # Browser-based UI version
+├── README.md
+└── .gitignore
+```
 # Resume – Job Match Analyzer (C++ | STL | OOP | Hashing)
 
 ---
@@ -57,7 +67,29 @@ Responsible for:
 Single responsibility: **Text preprocessing**
 
 ---
+---
 
+## 🌐 Web Interface Version
+
+In addition to the C++ CLI implementation, this project includes a web-based interface built using:
+
+- HTML
+- CSS
+- JavaScript
+
+The **C++ version represents the core algorithm implementation** and contains the original logic for:
+
+- Text normalization
+- Manual tokenization
+- Stopword filtering
+- Frequency-based weighted scoring
+- Capped contribution per skill (max 3 points)
+
+The JavaScript version mirrors the same algorithm to visualize the results in a browser interface.
+
+The web UI was created to demonstrate how the same DSA-driven logic can be adapted across platforms while keeping the core algorithm consistent.
+
+---
 ### 🔹 SkillMatcher
 
 Responsible for:
